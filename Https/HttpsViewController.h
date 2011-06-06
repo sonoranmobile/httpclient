@@ -7,9 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HTTPClient.h"
 
-@interface HttpsViewController : UIViewController {
+@interface HttpsViewController : UIViewController <HTTPClientProtocol>
+{
     
+	IBOutlet UITextField *urlEdit;
+	IBOutlet UITextView *pageText;
+	IBOutlet UILabel *statusLabel;
+	
+	HTTPClient*			client;
 }
 
+- (IBAction)doFetch:(id)sender;
 @end

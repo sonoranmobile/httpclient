@@ -12,6 +12,9 @@
 
 - (void)dealloc
 {
+    [urlEdit release];
+    [pageText release];
+	[statusLabel release];
     [super dealloc];
 }
 
@@ -25,16 +28,26 @@
 
 #pragma mark - View lifecycle
 
-/*
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	pageText.text = @"";
+	client = [[HTTPClient alloc] init];
+	[client setDelegate:self];
+	[client addHost:@"www.arizonatreks.org"];
 }
-*/
+
 
 - (void)viewDidUnload
 {
+    [urlEdit release];
+    urlEdit = nil;
+    [pageText release];
+    pageText = nil;
+	[statusLabel release];
+	statusLabel = nil;
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -45,5 +58,37 @@
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
+
+#pragma mark -
+#pragma mark NSURLConnection
+
+- (IBAction)doFetch:(id)sender 
+{
+	[urlEdit resignFirstResponder];
+	[pageText resignFirstResponder];
+	pageText.text = @"";
+	[client setUrl:[NSURL URLWithString:urlEdit.text]];
+	[client run];
+}
+
+-(void)client:(HTTPClient*)client didcompleteRequestWithString:(NSString*)body
+{
+	statusLabel.text = @"Request complete";
+	pageText.text = body;
+}
+
+-(void)client:(HTTPClient*)client didReceiveError:(NSError*)err
+{
+	statusLabel.text = @"Error";
+	pageText.text = [err description];
+}
+
+-(void)client:(HTTPClient*)client didReceiveStatus:(NSString*)status
+{
+	statusLabel.text = status;
+}
+
+
+
 
 @end

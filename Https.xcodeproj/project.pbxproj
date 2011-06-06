@@ -16,6 +16,7 @@
 		1AA23847135D9FCC007ECA93 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1AA23845135D9FCC007ECA93 /* MainWindow.xib */; };
 		1AA2384A135D9FCC007ECA93 /* HttpsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AA23849135D9FCC007ECA93 /* HttpsViewController.m */; };
 		1AA2384D135D9FCC007ECA93 /* HttpsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1AA2384B135D9FCC007ECA93 /* HttpsViewController.xib */; };
+		1AC1E2EA136043280053EA9E /* HTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC1E2E9136043280053EA9E /* HTTPClient.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,16 +24,19 @@
 		1AA23833135D9FCC007ECA93 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		1AA23835135D9FCC007ECA93 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1AA23837135D9FCC007ECA93 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		1AA2383B135D9FCC007ECA93 /* Https-Info.plist */ = {isa = PBXFileReference; path = "Https-Info.plist"; sourceTree = "<group>"; };
+		1AA2383B135D9FCC007ECA93 /* Https-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Https-Info.plist"; sourceTree = "<group>"; };
 		1AA2383D135D9FCC007ECA93 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		1AA2383F135D9FCC007ECA93 /* Https-Prefix.pch */ = {isa = PBXFileReference; path = "Https-Prefix.pch"; sourceTree = "<group>"; };
+		1AA2383F135D9FCC007ECA93 /* Https-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Https-Prefix.pch"; sourceTree = "<group>"; };
 		1AA23840135D9FCC007ECA93 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		1AA23842135D9FCC007ECA93 /* HttpsAppDelegate.h */ = {isa = PBXFileReference; path = HttpsAppDelegate.h; sourceTree = "<group>"; };
+		1AA23842135D9FCC007ECA93 /* HttpsAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HttpsAppDelegate.h; sourceTree = "<group>"; };
 		1AA23843135D9FCC007ECA93 /* HttpsAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HttpsAppDelegate.m; sourceTree = "<group>"; };
 		1AA23846135D9FCC007ECA93 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainWindow.xib; sourceTree = "<group>"; };
-		1AA23848135D9FCC007ECA93 /* HttpsViewController.h */ = {isa = PBXFileReference; path = HttpsViewController.h; sourceTree = "<group>"; };
+		1AA23848135D9FCC007ECA93 /* HttpsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HttpsViewController.h; sourceTree = "<group>"; };
 		1AA23849135D9FCC007ECA93 /* HttpsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HttpsViewController.m; sourceTree = "<group>"; };
 		1AA2384C135D9FCC007ECA93 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/HttpsViewController.xib; sourceTree = "<group>"; };
+		1AC1E2E8136043280053EA9E /* HTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTTPClient.h; sourceTree = "<group>"; };
+		1AC1E2E9136043280053EA9E /* HTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTTPClient.m; sourceTree = "<group>"; };
+		1AC1E2EC136046C00053EA9E /* HTTPClientProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTTPClientProtocol.h; path = ../HTTPClientProtocol.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +90,9 @@
 				1AA23849135D9FCC007ECA93 /* HttpsViewController.m */,
 				1AA2384B135D9FCC007ECA93 /* HttpsViewController.xib */,
 				1AA2383A135D9FCC007ECA93 /* Supporting Files */,
+				1AC1E2E8136043280053EA9E /* HTTPClient.h */,
+				1AC1E2E9136043280053EA9E /* HTTPClient.m */,
+				1AC1E2EC136046C00053EA9E /* HTTPClientProtocol.h */,
 			);
 			path = Https;
 			sourceTree = "<group>";
@@ -167,6 +174,7 @@
 				1AA23841135D9FCC007ECA93 /* main.m in Sources */,
 				1AA23844135D9FCC007ECA93 /* HttpsAppDelegate.m in Sources */,
 				1AA2384A135D9FCC007ECA93 /* HttpsViewController.m in Sources */,
+				1AC1E2EA136043280053EA9E /* HTTPClient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -241,6 +249,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Https/Https-Prefix.pch";
 				INFOPLIST_FILE = "Https/Https-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -254,6 +263,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Https/Https-Prefix.pch";
 				INFOPLIST_FILE = "Https/Https-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
@@ -279,6 +289,7 @@
 				1AA23852135D9FCC007ECA93 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
