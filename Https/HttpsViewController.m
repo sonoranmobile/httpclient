@@ -10,13 +10,6 @@
 
 @implementation HttpsViewController
 
-- (void)dealloc
-{
-    [urlEdit release];
-    [pageText release];
-	[statusLabel release];
-    [super dealloc];
-}
 
 - (void)didReceiveMemoryWarning
 {
@@ -42,11 +35,8 @@
 
 - (void)viewDidUnload
 {
-    [urlEdit release];
     urlEdit = nil;
-    [pageText release];
     pageText = nil;
-	[statusLabel release];
 	statusLabel = nil;
     [super viewDidUnload];
     // Release any retained subviews of the main view.
@@ -71,9 +61,10 @@
 	[client run];
 }
 
--(void)client:(HTTPClient*)client didcompleteRequestWithString:(NSString*)body
+-(void)client:(HTTPClient*)http didcompleteRequestWithData:(NSData*)data
 {
 	statusLabel.text = @"Request complete";
+	NSString* body = [http dataAsString];
 	pageText.text = body;
 }
 

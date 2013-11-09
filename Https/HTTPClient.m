@@ -6,60 +6,72 @@
 //  Copyright 2011 Froggy Tech, LLC. All rights reserved.
 //
 
-#import "HTTPClient.h"
+// NSJSONSerialization
 
+#import "HTTPClient.h"
+#import <Foundation/NSJSONSerialization.h>
+
+static NSString* baseURL	= @"https://api.sendhub.com/";
+static NSString* userString = @"/?username=6233320491&api_key=8f47c1a3427d9ca4b8ef890e92602605becace54";
+
+@interface HTTPClient ()
+@property (strong, nonatomic) NSURLConnection*	connection;
+@property (strong, nonatomic) NSMutableArray*	acceptHosts;
+
+@end
 
 @implementation HTTPClient
-@synthesize data;
-@synthesize url;
-@synthesize delegate;
+
++(NSString*)baseURL {
+	return baseURL;
+}
+
++(NSString*)userString {
+	return userString;
+}
+
 
 +(HTTPClient*)client;
 {
-	HTTPClient* client = [[[HTTPClient alloc] init] autorelease];
+	HTTPClient* client = [[HTTPClient alloc] init];
 	return client;
 }
 
 +(HTTPClient*)clientWithUrl:(NSURL*)u
 {
-	HTTPClient* client = [[[HTTPClient alloc] initWithUrl:u] autorelease];
+	HTTPClient* client = [[HTTPClient alloc] initWithUrl:u];
 	return client;
 }
 
 -(id)init
 {
-	[super init];
-	data = [[NSMutableData alloc] init];
-	acceptHosts = [[NSMutableArray alloc] init];
+	self = [super init];
+	if(self) {
+		_data = [[NSMutableData alloc] init];
+		_acceptHosts = [[NSMutableArray alloc] init];
+	}
+	
 	return self;
 }
 
 -(id)initWithUrl:(NSURL*)u
 {
-	[self init];
-	[self setUrl:u];
+	self = [self init];
+	if(self) {
+		[self setUrl:u];
+	}
 	return self;
-}
-
--(void)dealloc
-{
-	[connection release];
-	[data release];
-	[url release];
-	[delegate release];
-	[acceptHosts release];
-	[super dealloc];
 }
 
 -(BOOL)run
 {
 	BOOL result = NO;
 	
-	if(url)
+	if(_url)
 	{
-		[data setLength:0];
-		NSURLRequest* request = [NSURLRequest requestWithURL:url];
-		connection = 
+		[_data setLength:0];
+		NSURLRequest* request = [NSURLRequest requestWithURL:_url];
+		_connection =
 			[[NSURLConnection alloc] initWithRequest:request delegate:self];
 		result = YES;
 	}
@@ -74,7 +86,7 @@
 	return [self run];
 }
 
-+(NSString*)postDataFromDictionary:(NSDictionary*)input
+-(NSString*)postDataFromDictionary:(NSDictionary*)input
 {
 	NSMutableString* body = [NSMutableString string];
 	NSEnumerator* en = [input keyEnumerator];
@@ -94,48 +106,21 @@
 {
 	BOOL result = NO;
 	
-	if(url)
+	if(_url)
 	{
-		[data setLength:0];
-		NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
+		[_data setLength:0];
+		NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:_url];
 		[request setHTTPMethod:@"POST"];
-		NSString* body = [HTTPClient postDataFromDictionary:postData];
+		NSString* body = [self postDataFromDictionary:postData];
 		const char* bodyString = [body cStringUsingEncoding:NSUTF8StringEncoding];
 		NSData* bodyData = [NSData dataWithBytes:bodyString length:strlen(bodyString)];
 		[request setHTTPBody:bodyData];
-		connection = 
+		_connection =
 		[[NSURLConnection alloc] initWithRequest:request delegate:self];
 		result = YES;
 	}
 	
 	return result;
-}
-
-+(NSData*)postSynchronousRequest:(NSDictionary*)postData
-						   toUrl:(NSURL*)url
-			   returningResponse:(NSURLResponse **)response 
-						   error:(NSError **)error
-{
-	NSData* resultBody;
-	
-	if(url)
-	{
-		NSMutableURLRequest* request = 
-			[NSMutableURLRequest requestWithURL:url];
-		[request setHTTPMethod:@"POST"];
-		
-		NSString* body = [HTTPClient postDataFromDictionary:postData];
-		const char* bodyString = 
-			[body cStringUsingEncoding:NSUTF8StringEncoding];
-		NSData* bodyData = 
-			[NSData dataWithBytes:bodyString length:strlen(bodyString)];
-		[request setHTTPBody:bodyData];
-		resultBody = [NSURLConnection sendSynchronousRequest:request
-										   returningResponse:response
-													   error:error];
-	}
-	
-	return resultBody;
 }
 
 -(BOOL)post:(NSDictionary*)postData toUrl:(NSURL*)u
@@ -144,34 +129,55 @@
 	return [self post:postData];
 }
 
+/* Takes an NSDictionary and creates a JSON object containing the 
+   items in the dictionary and uses that as the body in the post
+*/
+-(BOOL)postJSONWithDictionary:(NSDictionary*)postData {
+	BOOL success = NO;
+	NSError* error = nil;
+	if([NSJSONSerialization isValidJSONObject:postData]) {
+		NSData* json = [NSJSONSerialization dataWithJSONObject:postData options:0 error:&error];
+		
+		if(_url) {
+			[_data setLength:0];
+			NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:_url];
+			[request setHTTPMethod:@"POST"];
+			[request setHTTPBody:json];
+			[request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+			_connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+			success = YES;
+		}
+		
+	}
+	return success;
+}
+
 
 -(void)setAcceptableHosts:(NSArray*)hostArray
 {
-	NSMutableArray* temp = acceptHosts;
-	acceptHosts = [[NSMutableArray alloc] initWithArray:hostArray];
-	[temp release];
+	_acceptHosts = [[NSMutableArray alloc] initWithArray:hostArray];
 }
 
 -(NSArray*)acceptableHosts
 {
-	return acceptHosts;
+	return _acceptHosts;
 }
 
 -(void)addHost:(NSString*)newHost
 {
-	[acceptHosts addObject:newHost];
+	[_acceptHosts addObject:newHost];
 }
 
 -(void)addHosts:(NSArray*)hostArray
 {
-	[acceptHosts addObjectsFromArray:hostArray];
+	[_acceptHosts addObjectsFromArray:hostArray];
 }
 
 
 -(void)sendStatus:(NSString*)status
 {
-	if([delegate respondsToSelector:@selector(client:didReceiveStatus:)])
-		[delegate client:self didReceiveStatus:status];
+	if([_delegate respondsToSelector:@selector(client:didReceiveStatus:)])
+		[_delegate client:self didReceiveStatus:status];
 }
 
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace
@@ -195,7 +201,7 @@
 		 isEqualToString:NSURLAuthenticationMethodServerTrust])
 	{
 		// we only trust our own domain
-		if([acceptHosts containsObject:challenge.protectionSpace.host])
+		if([_acceptHosts containsObject:challenge.protectionSpace.host])
 		{
 			NSURLCredential *credential =
 			[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
@@ -239,6 +245,9 @@
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
 	NSString* statusText = @"connection:didReceiveResponse:";
+	NSHTTPURLResponse* urlResponse = (NSHTTPURLResponse*)response;
+	_statusCode = urlResponse.statusCode;
+	_statusString = [NSHTTPURLResponse localizedStringForStatusCode:_statusCode];
 	[self sendStatus:statusText];
 }
 
@@ -246,7 +255,7 @@
 {
 	NSString* statusText = @"connection:didReceiveData:";
 	[self sendStatus:statusText];
-	[data appendData:value];
+	[_data appendData:value];
 }
 
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
@@ -262,22 +271,39 @@
 	[self sendStatus:statusText];
 }
 
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+- (void)connection:(NSURLConnection *)conn didFailWithError:(NSError *)error
 {
 	NSString* statusText = @"connection:didFailWithError:";
 	[self sendStatus:statusText];
-	[delegate client:self didReceiveError:error];
+	[_delegate client:self didReceiveError:error];
+	_connection = nil;
 }
 
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+- (void)connectionDidFinishLoading:(NSURLConnection *)conn
 {
 	NSString* statusText = @"connectionDidFinishLoading:";
 	[self sendStatus:statusText];
-	[data appendData:[NSData dataWithBytes:"\0" length:1]];
-	NSString* body = [NSString stringWithUTF8String:[data bytes]];
-	[delegate client:self didcompleteRequestWithString:body];
+	[_delegate client:self didcompleteRequestWithData:_data];
+	_connection = nil;
 }
 
+-(NSString*)dataAsString
+{
+	NSString* pageText = [[NSString alloc]
+						   initWithBytes:[_data bytes] length:[_data length] encoding:NSUTF8StringEncoding];
+	return pageText;
+}
 
+-(NSDictionary*)jsonDataError:(NSError**)error {
+	NSDictionary* dictionary = nil;
+	*error = nil;
+	dictionary = [NSJSONSerialization JSONObjectWithData:_data options:0 error:error];
+	if(*error) {
+		NSLog(@"jsonData found error %@", *error);
+		dictionary = nil;
+	}
+	
+	return dictionary;
+}
 
 @end

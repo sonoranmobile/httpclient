@@ -9,26 +9,39 @@
 // needed for the form and use the post: or post:toUrl: methods.
 //
 
+
+/*  This class was originally written by me in 2011 and has been used and modified quite a bit over the years.
+	I made a few changes to it for this exercise and noticed some things I would like to change but are not
+	required for this exercise.  The main change I plan to make will be to support blocks or delegate. */
+
 #import <Foundation/Foundation.h>
-#import "HTTPClientProtocol.h"
+
+@class HTTPClient;
+
+@protocol HTTPClientProtocol <NSObject>
+@required
+-(void)client:(HTTPClient*)client didReceiveError:(NSError*)err;
+-(void)client:(HTTPClient*)client didcompleteRequestWithData:(NSData*)data;
+
+@optional
+-(void)client:(HTTPClient*)client didReceiveStatus:(NSString*)status;
+
+@end
 
 
 @interface HTTPClient : NSObject 
-{
-    NSURLConnection*	connection;
-	NSMutableData*		data;
-	NSURL*				url;
-	
-	id<HTTPClientProtocol> delegate;
-	NSMutableArray*		acceptHosts;
-}
-@property (nonatomic, retain, readonly) NSMutableData* data;
-@property (retain, nonatomic) NSURL* url;
-@property (retain, nonatomic) id<HTTPClientProtocol> delegate;
+@property (nonatomic, strong, readonly) NSMutableData* data;
+@property (strong, nonatomic) NSURL* url;
+@property (strong, nonatomic) id<HTTPClientProtocol> delegate;
+@property (assign, nonatomic) NSInteger statusCode;
+@property (strong, nonatomic) NSString* statusString;
 
 
 +(HTTPClient*)client;
 +(HTTPClient*)clientWithUrl:(NSURL*)u;
+
++(NSString*)baseURL;
++(NSString*)userString;
 
 -(id)init;
 -(id)initWithUrl:(NSURL*)u;
@@ -37,15 +50,13 @@
 -(BOOL)runWithUrl:(NSURL*)u;
 -(BOOL)post:(NSDictionary*)postData;
 -(BOOL)post:(NSDictionary*)postData toUrl:(NSURL*)u;
+-(BOOL)postJSONWithDictionary:(NSDictionary*)postData;
 
 -(void)setAcceptableHosts:(NSArray*)hostArray;
 -(NSArray*)acceptableHosts;
 -(void)addHost:(NSString*)newHost;
 -(void)addHosts:(NSArray*)hostArray;
 
-+(NSData*)postSynchronousRequest:(NSDictionary*)postData
-						   toUrl:(NSURL*)url
-			   returningResponse:(NSURLResponse **)response 
-						   error:(NSError **)error;
-
+-(NSString*)dataAsString;
+-(NSDictionary*)jsonDataError:(NSError**)error;
 @end
