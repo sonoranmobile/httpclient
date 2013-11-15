@@ -27,7 +27,7 @@
 {
     [super viewDidLoad];
 	pageText.text = @"";
-	client = [[HTTPClient alloc] init];
+	client = [[SMHTTPClient alloc] init];
 	[client setDelegate:self];
 	[client addHost:@"www.arizonatreks.org"];
 }
@@ -61,20 +61,20 @@
 	[client run];
 }
 
--(void)client:(HTTPClient*)http didcompleteRequestWithData:(NSData*)data
+-(void)client:(SMHTTPClient*)http didcompleteRequestWithData:(NSData*)data
 {
 	statusLabel.text = @"Request complete";
 	NSString* body = [http dataAsString];
 	pageText.text = body;
 }
 
--(void)client:(HTTPClient*)client didReceiveError:(NSError*)err
+-(void)client:(SMHTTPClient*)client didReceiveError:(NSError*)err
 {
 	statusLabel.text = @"Error";
 	pageText.text = [err description];
 }
 
--(void)client:(HTTPClient*)client didReceiveStatus:(NSString*)status
+-(void)client:(SMHTTPClient*)client didReceiveStatus:(NSString*)status
 {
 	statusLabel.text = status;
 }
