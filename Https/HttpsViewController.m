@@ -29,7 +29,7 @@
 	pageText.text = @"";
 	client = [[SMHTTPClient alloc] init];
 	[client setDelegate:self];
-	[client addHost:@"www.arizonatreks.org"];
+	[client addHost:@"www.sonoranmobile.com"];
 }
 
 

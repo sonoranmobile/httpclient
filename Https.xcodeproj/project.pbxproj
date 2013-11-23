@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A6218F418411800003282C6 /* SMHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A6218F318411800003282C6 /* SMHTTPClient.m */; };
 		1AA23834135D9FCC007ECA93 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AA23833135D9FCC007ECA93 /* UIKit.framework */; };
 		1AA23836135D9FCC007ECA93 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AA23835135D9FCC007ECA93 /* Foundation.framework */; };
 		1AA23838135D9FCC007ECA93 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AA23837135D9FCC007ECA93 /* CoreGraphics.framework */; };
@@ -16,10 +17,11 @@
 		1AA23847135D9FCC007ECA93 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1AA23845135D9FCC007ECA93 /* MainWindow.xib */; };
 		1AA2384A135D9FCC007ECA93 /* HttpsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AA23849135D9FCC007ECA93 /* HttpsViewController.m */; };
 		1AA2384D135D9FCC007ECA93 /* HttpsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1AA2384B135D9FCC007ECA93 /* HttpsViewController.xib */; };
-		1ADDDDFB18363FC40007FE48 /* SMHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ADDDDFA18363FC40007FE48 /* SMHTTPClient.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1A6218F218411800003282C6 /* SMHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMHTTPClient.h; sourceTree = "<group>"; };
+		1A6218F318411800003282C6 /* SMHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMHTTPClient.m; sourceTree = "<group>"; };
 		1AA2382F135D9FCB007ECA93 /* Https.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Https.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AA23833135D9FCC007ECA93 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		1AA23835135D9FCC007ECA93 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -34,8 +36,6 @@
 		1AA23848135D9FCC007ECA93 /* HttpsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = HttpsViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		1AA23849135D9FCC007ECA93 /* HttpsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = HttpsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		1AA2384C135D9FCC007ECA93 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/HttpsViewController.xib; sourceTree = "<group>"; };
-		1ADDDDF918363FC40007FE48 /* SMHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = SMHTTPClient.h; path = ../../Sources/SMHTTPClient.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		1ADDDDFA18363FC40007FE48 /* SMHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SMHTTPClient.m; path = ../../Sources/SMHTTPClient.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,8 +82,8 @@
 		1AA23839135D9FCC007ECA93 /* Https */ = {
 			isa = PBXGroup;
 			children = (
-				1ADDDDF918363FC40007FE48 /* SMHTTPClient.h */,
-				1ADDDDFA18363FC40007FE48 /* SMHTTPClient.m */,
+				1A6218F218411800003282C6 /* SMHTTPClient.h */,
+				1A6218F318411800003282C6 /* SMHTTPClient.m */,
 				1AA23842135D9FCC007ECA93 /* HttpsAppDelegate.h */,
 				1AA23843135D9FCC007ECA93 /* HttpsAppDelegate.m */,
 				1AA23845135D9FCC007ECA93 /* MainWindow.xib */,
@@ -175,9 +175,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A6218F418411800003282C6 /* SMHTTPClient.m in Sources */,
 				1AA23841135D9FCC007ECA93 /* main.m in Sources */,
 				1AA23844135D9FCC007ECA93 /* HttpsAppDelegate.m in Sources */,
-				1ADDDDFB18363FC40007FE48 /* SMHTTPClient.m in Sources */,
 				1AA2384A135D9FCC007ECA93 /* HttpsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
